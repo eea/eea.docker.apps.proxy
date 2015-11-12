@@ -6,43 +6,41 @@ events {
 
 http {
     client_max_body_size 10M;
-    server_tokens off; # Don't show the nginx version number, a security best practice
     gzip on;
-
-    # default error pages
-    proxy_intercept_errors on; # comment this line if you want to see the original app error pages
-    error_page 404             /404.html;
-    error_page 500 502 503 504 /50x.html;
+    ignore_invalid_headers off;
 
     upstream logs.apps.eea.europa.eu {
        server 10.46.104.34:80;
     }
 
     upstream eggrepo.apps.eea.europa.eu {
-       server 10.46.104.47:8200;
+       server 10.46.104.34:8200;
     }
 
     upstream aide.apps.eea.europa.eu {
-       server 10.46.104.48:3020;
+       server 10.46.104.34:3020;
     }
 
     upstream pam.apps.eea.europa.eu {
-       server 10.46.104.48:3010;
+       server 10.46.104.34:3010;
     }
 
     upstream search.apps.eea.europa.eu {
-       server 10.46.104.48:3000;
+       server 10.46.104.34:3000;
     }
 
     upstream glossary.apps.eea.europa.eu {
-       server 10.46.104.48:2222;
+       server 10.46.104.34:2222;
     }
 
     upstream taskman.eionet.europa.eu {
+#       server 10.46.104.28:8888;
+#       server 10.46.104.28:8889;
        server 10.46.104.46:8889;
     }
 
     upstream community.eea.europa.eu {
+#       server 10.46.104.28:7070;
         server 10.46.104.46:7070;
     }
 
@@ -52,17 +50,7 @@ http {
 
     # Default server
     server {
-      server_name _;
-      location / {
         return 404;
-      }
-      include /etc/nginx/conf.d/errors.conf;
-    }
-
-    # testing server
-    server {
-      server_name testing.apps.eea.europa.eu;
-      include /etc/nginx/conf.d/errors.conf;
     }
 
     server {
@@ -77,7 +65,6 @@ http {
     server {
      listen 80;
      server_name ci.eionet.europa.eu;
-     ignore_invalid_headers off;
 
      location / {
       proxy_set_header        Host $host;
@@ -97,7 +84,6 @@ http {
      client_max_body_size 10M;
      server_name eggrepo.apps.eea.europa.eu;
      server_name eggrepo.eea.europa.eu;
-     include /etc/nginx/conf.d/errors.conf;
 
      location / {
        proxy_pass http://eggrepo.apps.eea.europa.eu;
@@ -217,8 +203,5 @@ http {
        proxy_pass http://community.eea.europa.eu;
      }
     }
-
-   include /etc/nginx/sites-enabled/*;
-
 }
 
