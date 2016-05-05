@@ -10,3 +10,6 @@ web:
         - ./nginx/conf.d:/etc/nginx/conf.d:ro
         - ./html:/usr/share/nginx/html:ro
         - ./nginx/tls:/etc/nginx/tls:ro
+    log_driver: "gelf"
+    log_opt:
+      gelf-address: "udp://logcentral.eea.europa.eu:12201" 
