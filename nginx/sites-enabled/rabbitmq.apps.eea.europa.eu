@@ -1,5 +1,5 @@
 upstream rabbitmq.apps.eea.europa.eu {
-   server 10.46.104.47:15672;
+   server 10.128.0.22:15672;
 }
 
 server {
